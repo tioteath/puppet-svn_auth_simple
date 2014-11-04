@@ -14,19 +14,25 @@ module Puppet::Parser::Functions
     DOC
 
     uri = args.first
-    raise ArgumentError, "Malformed URI" unless
-        URI.regexp(['http', 'https']).match uri
+    raise ArgumentError,
+        "URI is empty." if uri.nil? or uri.empty?
+    raise ArgumentError,
+        "Malformed URI: #{uri}." unless URI.regexp(['http', 'https']).match uri
 
     uri = URI.parse uri
 
-    http = Net::HTTP.new uri.host, uri.port
-    http.use_ssl = (uri.scheme.eql? 'https')
-    response = http.get uri.request_uri
+    http         = Net::HTTP.new uri.host, uri.port
+    http.use_ssl = uri.scheme.eql? 'https'
+    response     = http.get uri.request_uri
 
-    auth_realm = response.get_fields('WWW-Authenticate').first.
-        split('=').last.gsub(/(^")|("$)/, '') #|| 'Subversion Repository'
+    auth_field = response.get_fields('WWW-Authenticate')
+    if auth_field.kind_of? Array
+      realm = auth_field.first.split('=').last.gsub /(^")|("$)/, ''
+    else
+      realm = ''
+    end
+    realm_string = "<#{uri.scheme}://#{uri.host}:#{uri.port}> #{realm}".strip
 
-    Digest::MD5.hexdigest "<#{uri.scheme}://#{uri.host}:#{uri.port}> " \
-        "#{auth_realm}"
+    [realm_string, Digest::MD5.hexdigest(realm_string)]
   end
 end
