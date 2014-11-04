@@ -1,0 +1,13 @@
+{
+  "name": "uri-svn_auth_simple",
+  "version": "0.0.1",
+  "author": "Tio Teath",
+  "summary": "Manage the content of ~/.subversion/auth/svn.simple directory",
+  "license": "MIT",
+  "source": "https://github.com/tioteath/puppet-svn_auth_simple.git",
+  "project_page": "https://github.com/tioteath/puppet-svn_auth_simple",
+  "issues_url": "https://github.com/tioteath/puppet-svn_auth_simple/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
