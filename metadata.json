@@ -1,5 +1,5 @@
 {
-  "name": "uri-svn_auth_simple",
+  "name": "tioteath-svn_auth_simple",
   "version": "0.0.1",
   "author": "Tio Teath",
   "summary": "Manage the content of ~/.subversion/auth/svn.simple directory",
